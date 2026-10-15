@@ -14,6 +14,11 @@ int main() {
 
     // Get first number with input validation
     while (!(std::cin >> num1)) {
+        if (std::cin.eof()) {
+            std::cerr << "\nError: Input ended before a number was entered." << std::endl;
+            return 1;
+        }
+
         std::cout << "Error - Invalid input. Please enter a number: ";
         std::cin.clear(); // Clear error flags
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
@@ -22,18 +27,34 @@ int main() {
     // Get operator with input validation
     std::cout << "Enter an arithmetic operator (+, -, *, /): ";
     while (true) {
-        std::cin >> operation;
+        if (!(std::cin >> operation)) {
+            if (std::cin.eof()) {
+                std::cerr << "\nError: Input ended before an operator was entered." << std::endl;
+                return 1;
+            }
+
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Error: Invalid operator. Please enter +, -, *, or /: ";
+            continue;
+        }
+
         if (operation == '+' || operation == '-' || operation == '*' || operation == '/') {
             break;
-        } else {
-            std::cout << "Error: Invalid operator. Please enter +, -, *, or /: ";
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
+
+        std::cout << "Error: Invalid operator. Please enter +, -, *, or /: ";
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 
     // Get second number with input validation
     std::cout << "Enter second number: ";
     while (!(std::cin >> num2)) {
+        if (std::cin.eof()) {
+            std::cerr << "\nError: Input ended before a second number was entered." << std::endl;
+            return 1;
+        }
+
         std::cout << "Error - Invalid input. Please enter a second number: ";
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
